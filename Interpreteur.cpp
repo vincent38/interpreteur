@@ -57,7 +57,7 @@ Noeud* Interpreteur::seqInst() {
   NoeudSeqInst* sequence = new NoeudSeqInst();
   do {
     sequence->ajoute(inst());
-  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" );
+  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour");
   // Tant que le symbole courant est un début possible d'instruction...
   // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
   return sequence;
@@ -78,6 +78,8 @@ Noeud* Interpreteur::inst() {
   }
   else if (m_lecteur.getSymbole() == "repeter") {
       return instRepeter();
+  } else if (m_lecteur.getSymbole() == "pour") {
+      return instPour();
   } else erreur("Instruction incorrecte");
 }
 
@@ -238,6 +240,36 @@ Noeud* Interpreteur::instSiRiche() {
     }
     testerEtAvancer("finsi");
 
-    
     return new NoeudInstSiRiche(condition1,sequence1,expressionSinonsi,seqInstSinonsi,sequenceSinon);
+}
+
+Noeud* Interpreteur::instPour() {
+    //<instPour> ::= pour ( [<affectation>] ; <expression> ; [ <affectation> ] ) <seqInst> finpour
+    testerEtAvancer("pour");
+    testerEtAvancer("(");
+    //Affectation 0 ou 1
+    Noeud* affectationInit = nullptr;
+    Noeud* affectation2 = nullptr;
+    try {
+        affectationInit = affectation();
+        testerEtAvancer(";");
+    } catch (SyntaxeException e) {
+        m_lecteur.avancer();
+    }
+    Noeud* condition = expression();
+    //affectation2 0 ou 1
+    if (m_lecteur.getSymbole() == ";") {
+        testerEtAvancer(";");
+        affectation2 = affectation();
+    } else {
+        //TODO
+    }
+    testerEtAvancer(")");
+    Noeud* sequence = seqInst();
+    testerEtAvancer("finpour");
+    Noeud* monPour = new NoeudInstPour(condition, sequence);
+    monPour->ajoute(affectationInit);
+    monPour->ajoute(affectation2);
+    return monPour;
+
 }

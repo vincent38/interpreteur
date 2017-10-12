@@ -140,6 +140,44 @@ int NoeudInstSiRiche::executer() {
             m_sequenceSinon->executer();
         }   
     }
+}
     
+// NoeudInstPour
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudInstPour::NoeudInstPour(Noeud* condition, Noeud* sequence)
+: m_condition(condition), m_sequence(sequence) {
+    status = 0;
+}
+
+void NoeudInstPour::ajoute(Noeud* instruction) {
+    if (status == 0) {
+        m_init = instruction;
+        status = 1;
+    } else {
+        m_incr = instruction;
+        status = 0;
+    }
+}
+
+int NoeudInstPour::executer() {
+  //while (m_condition->executer()) m_sequence->executer();
+    if (m_init == nullptr and m_incr == nullptr) {
+        for (; m_condition->executer(); ) {
+            m_sequence->executer();
+        }
+    } else if (m_init == nullptr) {
+        for (; m_condition->executer(); m_incr->executer()) {
+            m_sequence->executer();
+        }
+    } else if (m_incr == nullptr) {
+        for (m_init->executer(); m_condition->executer();) {
+            m_sequence->executer();
+        }
+    } else {
+        for (m_init->executer(); m_condition->executer(); m_incr->executer()) {
+            m_sequence->executer();
+        }
+    }
   return 0; // La valeur renvoyée ne représente rien !
 }
