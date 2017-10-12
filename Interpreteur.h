@@ -33,10 +33,10 @@ private:
     Noeud*  expression();  //  <expression> ::= <facteur> { <opBinaire> <facteur> }
     Noeud*  facteur();     //     <facteur> ::= <entier>  |  <variable>  |  - <facteur>  | non <facteur> | ( <expression> )
                            //   <opBinaire> ::= + | - | *  | / | < | > | <= | >= | == | != | et | ou
-    Noeud*  instSi();      //      <instSi> ::= si ( <expression> ) <seqInst> finsi
+    Noeud*  instSi();      //      <instSi> ::= si ( <expression> ) <seqInst> finsi -----------à retirer quand siriche marchera------------
     Noeud*  instTantQue(); // <instTantQue> ::= tantque( <expression> ) <seqInst> fintantque
     Noeud*  instRepeter(); // <instRepeter> ::= repeter <seqInst> jusqua ( <expression> )
-    Noeud* instSiRiche();  // <instSiRiche> ::= si(<expression> )<seqInst> {sinonsi(<expression>) <seqInst> }[sinon <seqInst>]finsi
+    Noeud*  instSiRiche();  // <instSiRiche> ::= si(<expression> )<seqInst> {sinonsi(<expression>) <seqInst> }[sinon <seqInst>]finsi
     
     // outils pour simplifier l'analyse syntaxique
     void tester (const string & symboleAttendu) const throw (SyntaxeException);   // Si symbole courant != symboleAttendu, on lève une exception

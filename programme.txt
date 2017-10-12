@@ -1,11 +1,21 @@
 # Fichier de test
 # Les lignes de commentaires commencent par #
 procedure principale()
-  i = 12+3;
+  i = 2;
   k = 67;
+
+
   si (i>14)
     j=1;
+  sinonsi (i == 4)
+    j = 2;
+  sinonsi (i < 2)
+    j = 3;
+  sinon
+    j = 4;
   finsi
+
+
   tantque (k>42)
     k=k-1;
   fintantque

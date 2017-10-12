@@ -1,6 +1,7 @@
 #include "Interpreteur.h"
 #include <stdlib.h>
 #include <iostream>
+#include <vector>
 using namespace std;
 
 Interpreteur::Interpreteur(ifstream & fichier) :
@@ -56,7 +57,7 @@ Noeud* Interpreteur::seqInst() {
   NoeudSeqInst* sequence = new NoeudSeqInst();
   do {
     sequence->ajoute(inst());
-  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter");
+  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" );
   // Tant que le symbole courant est un début possible d'instruction...
   // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
   return sequence;
@@ -70,7 +71,7 @@ Noeud* Interpreteur::inst() {
     return affect;
   }
   else if (m_lecteur.getSymbole() == "si")
-    return instSi();
+    return instSiRiche();
   // Compléter les alternatives chaque fois qu'on rajoute une nouvelle instruction
   else if (m_lecteur.getSymbole() == "tantque") {
       return instTantQue();
@@ -131,7 +132,7 @@ Noeud* Interpreteur::facteur() {
   return fact;
 }
 
-Noeud* Interpreteur::instSi() {
+Noeud* Interpreteur::instSi() { //---------------------------------------à retirer quand siriche marchera------------
   // <instSi> ::= si ( <expression> ) <seqInst> finsi
   testerEtAvancer("si");
   testerEtAvancer("(");
@@ -167,17 +168,76 @@ Noeud* Interpreteur::instRepeter() {
 
 Noeud* Interpreteur::instSiRiche() {
     // <instSiRiche> ::= si(<expression> )<seqInst> {sinonsi(<expression>) <seqInst> }[sinon <seqInst>]finsi
-    
-   
+    bool testSinonSi = 1;
+    bool testSinon = 1;
+    vector<Noeud*> expressionSinonsi;
+    vector<Noeud*> seqInstSinonsi; 
+    Noeud* condition1 = NULL;
+    Noeud* sequence1 = NULL;
+    Noeud* conditionAjout;
+    Noeud* seqInstAjout;
+    Noeud* sequenceSinon = NULL;
     
     testerEtAvancer("si");
     testerEtAvancer("(");
-    Noeud* condition1 = expression();
+    condition1 = expression();
     testerEtAvancer(")");
-    Noeud* sequence = seqInst();
+    sequence1 = seqInst();
     //sinonsi
-    
+    /*try{
+        testerEtAvancer("sinonsi");
+    } catch (SyntaxeException e){
+        testSinonSi = 0;
+    }
+    if (testSinonSi){
+        testerEtAvancer("(");
+        conditionAjout = expression();
+        expressionSinonsi.push_back(conditionAjout)
+        testerEtAvancer(")");
+        seqInstAjout = seqInst();
+        seqInstSinonsi.push_back(seqInstAjout);
+        
+    }*/ 
+    /*try{
+        tester("sinonsi");
+    } catch (SyntaxeException e){
+        testSinonSi = 0;
+    }*/
+    /*if(m_lecteur.getSymbole() != "sinonsi"){
+        testSinonSi =0;
+    }*/
+    while(m_lecteur.getSymbole() == "sinonsi"){
+        m_lecteur.avancer();
+        testerEtAvancer("(");
+        conditionAjout = expression();
+        expressionSinonsi.push_back(conditionAjout);
+        testerEtAvancer(")");
+        seqInstAjout = seqInst();
+        seqInstSinonsi.push_back(seqInstAjout);
+        /*try{
+            tester("sinonsi");
+        } catch (SyntaxeException e){
+            testSinonSi = 0;
+        }*/
+        /*if(m_lecteur.getSymbole() != "sinonsi"){
+        testSinonSi =0;
+    }*/
+    }
     //sinon
+    /*try{
+        tester("sinon");
+    } catch (SyntaxeException e){
+        testSinon = 0;
+    }*/
+    /*if(m_lecteur.getSymbole() != "sinon"){
+        testSinon = 0;
+    }*/
+    if(m_lecteur.getSymbole() == "sinon"){
+        m_lecteur.avancer();
+        sequenceSinon = seqInst();
+    }
+    testerEtAvancer("finsi");
+
     
-    return nullptr;
+    return new NoeudInstSiRiche(condition1,sequence1,expressionSinonsi,seqInstSinonsi,sequenceSinon);
 }

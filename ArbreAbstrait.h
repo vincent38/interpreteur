@@ -111,4 +111,23 @@ class NoeudInstRepeter : public Noeud {
     Noeud*  m_sequence;
 };
 
+////////////////////////////////////////////////////////////////////////////////
+class NoeudInstSiRiche : public Noeud {
+// Classe pour représenter un noeud "instruction repeter"
+//  et ses 2 fils : la condition du repeter et la séquence d'instruction associée
+  public:
+    NoeudInstSiRiche(Noeud* condition, Noeud* sequence, vector<Noeud*> conditionSinonSi,
+            vector<Noeud*> sequenceSinonSi, Noeud* sequenceSinon);
+     // Construit une "instruction repeter" avec sa condition et sa séquence d'instruction
+   ~NoeudInstSiRiche() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();  // Exécute l'instruction repeter : repeter la séquence jusqu'a ce que la condition soit vraie 
+
+  private:
+    Noeud*  m_condition;
+    Noeud*  m_sequence;
+    vector<Noeud*> m_conditionSinonSi;
+    vector<Noeud*> m_sequenceSinonSi;
+    Noeud*  m_sequenceSinon;
+};
+
 #endif /* ARBREABSTRAIT_H */

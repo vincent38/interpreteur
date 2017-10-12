@@ -109,3 +109,37 @@ int NoeudInstRepeter::executer() {
     while (!m_condition->executer());
   return 0; // La valeur renvoyée ne représente rien !
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// NoeudInstSiRiche
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudInstSiRiche::NoeudInstSiRiche(Noeud* condition, Noeud* sequence, vector<Noeud*> conditionSinonSi,
+            vector<Noeud*> sequenceSinonSi, Noeud* sequenceSinon)
+        : m_condition(condition), m_sequence(sequence), m_conditionSinonSi(conditionSinonSi),
+        m_sequenceSinonSi(sequenceSinonSi), m_sequenceSinon(sequenceSinon) {
+}
+
+int NoeudInstSiRiche::executer() {
+  //while (m_condition->executer()) m_sequence->executer();
+    int i = 0;
+    bool passageDansLeIf = 0;
+    if(m_condition->executer()){
+        m_sequence->executer();
+        passageDansLeIf = 1;
+    } else if (1) {
+        for (auto condi : m_conditionSinonSi){
+            if(condi->executer()){
+                m_sequenceSinonSi[i]->executer();
+                break;
+            }
+            i++;
+        }
+    } if(!passageDansLeIf && i == m_conditionSinonSi.size()) {
+        if(m_sequenceSinon != NULL){
+            m_sequenceSinon->executer();
+        }   
+    }
+    
+  return 0; // La valeur renvoyée ne représente rien !
+}
