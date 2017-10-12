@@ -12,5 +12,9 @@ procedure principale()
   repeter
     i = i + 1;
   jusqua (i > 20)
+  m = 1;
+  pour (l = 0; l < 8; l = l + 1)
+	m = m + 1;
+  finpour
 finproc
 # Commentaire Final
