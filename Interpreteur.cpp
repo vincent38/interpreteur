@@ -58,7 +58,7 @@ Noeud* Interpreteur::seqInst() {
   NoeudSeqInst* sequence = new NoeudSeqInst();
   do {
     sequence->ajoute(inst());
-  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour");
+  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "ecrire");
   // Tant que le symbole courant est un début possible d'instruction...
   // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
   return sequence;
@@ -81,13 +81,15 @@ Noeud* Interpreteur::inst() {
       return instRepeter();
   } else if (m_lecteur.getSymbole() == "pour") {
       return instPour();
+  } else if (m_lecteur.getSymbole() == "ecrire") {
+      return instEcrire();
   } else erreur("Instruction incorrecte");
 }
 
 Noeud* Interpreteur::affectation() {
   // <affectation> ::= <variable> = <expression> 
   tester("<VARIABLE>");
-  Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole()); // La variable est ajoutée à la table eton la mémorise
+  Noeud* var = m_table.chercheAjoute(m_lecteur.getSymbole()); // La variable est ajoutée à la table et on la mémorise
   m_lecteur.avancer();
   testerEtAvancer("=");
   Noeud* exp = expression();             // On mémorise l'expression trouvée
@@ -273,11 +275,24 @@ Noeud* Interpreteur::instPour() {
 }
 
 Noeud* Interpreteur::instEcrire() {
+    //<instEcrire> ::= ecrire ( <expression> | <chaîne> {, <expression> | <chaîne> })
     testerEtAvancer("ecrire");
     testerEtAvancer("(");
     if (m_lecteur.getSymbole() == "<CHAINE>") {
-        m_lecteur
+        Noeud* str = m_table.chercheAjoute(m_lecteur.getSymbole()); // La variable est ajoutée à la table et on la mémorise
         m_lecteur.avancer();
+    } else {
+        Noeud* exp = expression();
     }
+    while (m_lecteur.getSymbole() == ";") {
+        testerEtAvancer(";");
+        if (m_lecteur.getSymbole() == "<CHAINE>") {
+            Noeud* str = m_table.chercheAjoute(m_lecteur.getSymbole()); // La variable est ajoutée à la table et on la mémorise
+            m_lecteur.avancer();
+        } else {
+            Noeud* exp = expression();
+        }
+    }
+    testerEtAvancer(")");
     return nullptr;
 }

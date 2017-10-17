@@ -1,30 +1,35 @@
 # Fichier de test
 # Les lignes de commentaires commencent par #
 procedure principale()
-  i = 2;
-  k = 67;
+  #i = 2;
+  #k = 67;
 
 
-  si (i>14)
-    j=1;
-  sinonsi (i == 4)
-    j = 2;
-  sinonsi (i < 2)
-    j = 3;
-  sinon
-    j = 4;
-  finsi
+  #si (i>14)
+    #j=1;
+  #sinonsi (i == 4)
+    #j = 2;
+  #sinonsi (i < 2)
+    #j = 3;
+  #sinon
+    #j = 4;
+  #finsi
 
 
-  tantque (k>42)
-    k=k-1;
-  fintantque
-  repeter
-    i = i + 1;
-  jusqua (i > 20)
-  m = 1;
-  pour (l = 0; l < 8; l = l + 1)
-	m = m + 1;
-  finpour
+  #tantque (k>42)
+    #k=k-1;
+  #fintantque
+  #repeter
+    #i = i + 1;
+  #jusqua (i > 20)
+  #m = 1;
+  #pour (l = 0; l < 8; l = l + 1)
+	#m = m + 1;
+  #finpour
+
+  i = 1;
+
+  ecrire("Bonjour, i vaut "; i; " !")
+
 finproc
 # Commentaire Final

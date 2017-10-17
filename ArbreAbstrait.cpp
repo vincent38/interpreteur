@@ -181,3 +181,25 @@ int NoeudInstPour::executer() {
     }
   return 0; // La valeur renvoyée ne représente rien !
 }
+
+// NoeudInstEcrire
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudInstEcrire::NoeudInstEcrire() {
+    
+}
+
+void NoeudInstEcrire::ajoute(Noeud* instruction) {
+    m_toPrint.push_back(instruction);
+}
+
+int NoeudInstEcrire::executer() {
+    for (auto i : m_toPrint) {
+        if ( typeid(*i)==typeid(SymboleValue) && *((SymboleValue*)i)== "<CHAINE>" ) {
+            //Chaîne de caractères
+        } else {
+            //Autre
+        }
+    }
+  return 0; // La valeur renvoyée ne représente rien !
+}
