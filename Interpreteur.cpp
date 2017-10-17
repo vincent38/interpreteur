@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
+#include <typeinfo>
 using namespace std;
 
 Interpreteur::Interpreteur(ifstream & fichier) :
@@ -261,8 +262,6 @@ Noeud* Interpreteur::instPour() {
     if (m_lecteur.getSymbole() == ";") {
         testerEtAvancer(";");
         affectation2 = affectation();
-    } else {
-        //TODO
     }
     testerEtAvancer(")");
     Noeud* sequence = seqInst();
@@ -271,5 +270,14 @@ Noeud* Interpreteur::instPour() {
     monPour->ajoute(affectationInit);
     monPour->ajoute(affectation2);
     return monPour;
+}
 
+Noeud* Interpreteur::instEcrire() {
+    testerEtAvancer("ecrire");
+    testerEtAvancer("(");
+    if (m_lecteur.getSymbole() == "<CHAINE>") {
+        m_lecteur
+        m_lecteur.avancer();
+    }
+    return nullptr;
 }
