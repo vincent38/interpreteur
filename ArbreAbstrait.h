@@ -170,4 +170,19 @@ class NoeudInstLire : public Noeud {
   private:
     vector<SymboleValue*>  m_vars;
 };
+
+////////////////////////////////////////////////////////////////////////////////
+class NoeudInstEcrire : public Noeud {
+// Classe pour représenter un noeud "instruction écrire"
+  public:
+    NoeudInstEcrire();
+     // Construit une "instruction repeter" avec sa condition et sa séquence d'instruction
+   ~NoeudInstEcrire() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();  // Exécute l'instruction ecrire : ecrit la phrase au tableau
+    void ajoute(Noeud* instruction);  // Ajoute un élément à écrire
+    
+  private:
+    vector<Noeud*> m_toPrint;
+};
+
 #endif /* ARBREABSTRAIT_H */

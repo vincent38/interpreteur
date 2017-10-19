@@ -24,6 +24,7 @@ private:
     Lecteur        m_lecteur;  // Le lecteur de symboles utilisé pour analyser le fichier
     TableSymboles  m_table;    // La table des symboles valués
     Noeud*         m_arbre;    // L'arbre abstrait
+    bool           m_error; 
 
     // Implémentation de la grammaire
     Noeud*  programme();   // <programme> ::= procedure principale() <seqInst> finproc FIN_FICHIER
@@ -33,7 +34,7 @@ private:
     Noeud*  expression();  // <expression> ::= <facteur> { <opBinaire> <facteur> }
     Noeud*  facteur();     // <facteur> ::= <entier>  |  <variable>  |  - <facteur>  | non <facteur> | ( <expression> )
                            // <opBinaire> ::= + | - | *  | / | < | > | <= | >= | == | != | et | ou
-    //Noeud*  instSi();      // <instSi> ::= si ( <expression> ) <seqInst> finsi -----------à retirer quand siriche marchera------------
+    Noeud*  instSi();      // <instSi> ::= si ( <expression> ) <seqInst> finsi -----------à retirer quand siriche marchera------------
     Noeud*  instTantQue(); // <instTantQue> ::= tantque( <expression> ) <seqInst> fintantque
     Noeud*  instRepeter(); // <instRepeter> ::= repeter <seqInst> jusqua ( <expression> )
     Noeud* instSiRiche();  // <instSiRiche> ::= si(<expression> )<seqInst> {sinonsi(<expression>) <seqInst> }[sinon <seqInst>]finsi
