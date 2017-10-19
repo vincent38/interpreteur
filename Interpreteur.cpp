@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <typeinfo>
+//#include "SymboleValue.h"
 using namespace std;
 
 Interpreteur::Interpreteur(ifstream & fichier) :
@@ -58,7 +59,7 @@ Noeud* Interpreteur::seqInst() {
   NoeudSeqInst* sequence = new NoeudSeqInst();
   do {
     sequence->ajoute(inst());
-  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour");
+  } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "lire");
   // Tant que le symbole courant est un début possible d'instruction...
   // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
   return sequence;
@@ -81,6 +82,8 @@ Noeud* Interpreteur::inst() {
       return instRepeter();
   } else if (m_lecteur.getSymbole() == "pour") {
       return instPour();
+  } else if (m_lecteur.getSymbole() == "lire") {
+      return instLire();
   } else erreur("Instruction incorrecte");
 }
 
@@ -135,7 +138,7 @@ Noeud* Interpreteur::facteur() {
   return fact;
 }
 
-Noeud* Interpreteur::instSi() { //---------------------------------------à retirer quand siriche marchera------------
+/*Noeud* Interpreteur::instSi() { //---------------------------------------à retirer quand siriche marchera------------
   // <instSi> ::= si ( <expression> ) <seqInst> finsi
   testerEtAvancer("si");
   testerEtAvancer("(");
@@ -144,7 +147,7 @@ Noeud* Interpreteur::instSi() { //---------------------------------------à reti
   Noeud* sequence = seqInst();     // On mémorise la séquence d'instruction
   testerEtAvancer("finsi");
   return new NoeudInstSi(condition, sequence); // Et on renvoie un noeud Instruction Si
-}
+}*/
 
 Noeud* Interpreteur::instTantQue() {
     // <instTantQue> ::= tantque( <expression> ) <seqInst> fintantque
@@ -276,8 +279,36 @@ Noeud* Interpreteur::instEcrire() {
     testerEtAvancer("ecrire");
     testerEtAvancer("(");
     if (m_lecteur.getSymbole() == "<CHAINE>") {
-        m_lecteur
+        //m_lecteur
         m_lecteur.avancer();
     }
     return nullptr;
+}
+
+Noeud* Interpreteur::instLire() {
+    bool varExist = 1;
+    vector<SymboleValue*> vars;
+    SymboleValue* var;
+       
+    testerEtAvancer("lire");
+    testerEtAvancer("(");
+    tester("<VARIABLE>");
+    //m_lecteur.getSymbole();
+    var = m_table.chercheAjoute(m_lecteur.getSymbole());
+    vars.push_back(var);
+    m_lecteur.avancer();
+    while(varExist){ //res = vars contient le nom de toute les variables concerner dans l'ordre
+        if(m_lecteur.getSymbole() == ","){
+            m_lecteur.avancer();
+            if(m_lecteur.getSymbole() == "<VARIABLE>"){
+                var = m_table.chercheAjoute(m_lecteur.getSymbole());
+                vars.push_back(var);
+                m_lecteur.avancer();
+            }
+        } else {
+            varExist = 0;
+        }
+    }
+    testerEtAvancer(")"); 
+    return new NoeudInstLire(vars);
 }

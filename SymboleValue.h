@@ -8,6 +8,8 @@ using namespace std;
 #include "Symbole.h"
 #include "ArbreAbstrait.h"
 
+//class Symbole;
+
 class SymboleValue : public Symbole,  // Un symbole valué est un symbole qui a une valeur (définie ou pas)
                      public Noeud  {  //  et c'est aussi une feuille de l'arbre abstrait
 public:

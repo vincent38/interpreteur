@@ -8,6 +8,8 @@
 // NoeudSeqInst
 ////////////////////////////////////////////////////////////////////////////////
 
+//class SymboleValue;
+
 NoeudSeqInst::NoeudSeqInst() : m_instructions() {
 }
 
@@ -179,5 +181,21 @@ int NoeudInstPour::executer() {
             m_sequence->executer();
         }
     }
+  return 0; // La valeur renvoyée ne représente rien !
+}
+////////////////////////////////////////////////////////////////////////////////
+// NoeudInstLire
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudInstLire::NoeudInstLire(vector<SymboleValue*> vars) : m_vars(vars){}
+
+int NoeudInstLire::executer() {
+  
+    int a = 0;
+    for(auto v : m_vars){
+        cin >> a;
+        v->setValeur(a);
+    }
+    
   return 0; // La valeur renvoyée ne représente rien !
 }

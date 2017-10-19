@@ -11,6 +11,12 @@ using namespace std;
 
 #include "Symbole.h"
 #include "Exceptions.h"
+//#include "SymboleValue.h"
+
+
+//#include "TableSymboles.h"
+
+//class Symbole;
 
 ////////////////////////////////////////////////////////////////////////////////
 class Noeud {
@@ -130,6 +136,7 @@ class NoeudInstSiRiche : public Noeud {
     Noeud*  m_sequenceSinon;
 };
 
+////////////////////////////////////////////////////////////////////////////////
 class NoeudInstPour : public Noeud {
 // Classe pour représenter un noeud "instruction pour"
 //  et ses 2 à 4 fils : la condition du pour et la séquence d'instruction associée
@@ -148,4 +155,19 @@ class NoeudInstPour : public Noeud {
     int     status;
 };
 
+class SymboleValue;
+
+////////////////////////////////////////////////////////////////////////////////
+class NoeudInstLire : public Noeud {
+// Classe pour représenter un noeud "instruction repeter"
+//  et ses 2 fils : la condition du repeter et la séquence d'instruction associée
+  public:
+    NoeudInstLire(vector<SymboleValue*> vars);
+     // Construit une "instruction repeter" avec sa condition et sa séquence d'instruction
+   ~NoeudInstLire() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();  // Exécute l'instruction repeter : repeter la séquence jusqu'a ce que la condition soit vraie 
+    
+  private:
+    vector<SymboleValue*>  m_vars;
+};
 #endif /* ARBREABSTRAIT_H */

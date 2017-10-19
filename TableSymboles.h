@@ -6,6 +6,9 @@
 #include <iostream>
 using namespace std;
 
+//class SymboleValue;
+
+
 class TableSymboles {
 public:
     TableSymboles(); // Construit une table vide de pointeurs sur des symboles valués
