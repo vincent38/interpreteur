@@ -5,4 +5,5 @@ procedure principale()
   tantque(a > 4)
     a = a-1;
   fintantque
+  ecrire("resultat :",a)
 finproc

@@ -344,3 +344,14 @@ Noeud* Interpreteur::instLire() {
     testerEtAvancer(")"); 
     return new NoeudInstLire(vars);
 }
+
+void Interpreteur::traduitEnCPP(ostream & cout, unsigned int indentation) const{
+  cout << setw(4*indentation) << "" << "int main() {" << endl;
+    // Début d’un programme C++
+    // Ecrire en C++ la déclaration des variables présentes dans le programme... 
+    // ... variables dont on retrouvera le nom en parcourant la table des symboles ! 
+    // Par exemple, si le programme contient i,j,k, il faudra écrire : int i; int j; int k; ... 
+  getArbre()->traduitEnCPP(cout,indentation+1);// lance l'opération traduitEnCPP sur la racine
+  cout << setw(4*(indentation+1)) << "" << "return 0;"<< endl; 
+  cout << setw(4*indentation) << "}" << endl; // Fin d’un programme C++ 
+}

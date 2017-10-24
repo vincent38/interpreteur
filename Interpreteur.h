@@ -19,6 +19,7 @@ public:
 
 	inline const TableSymboles & getTable () const  { return m_table;    } // accesseur	
 	inline Noeud* getArbre () const { return m_arbre; }                    // accesseur
+        void traduitEnCPP(ostream & cout, unsigned int indentation) const;     //permet de traduire en c++ dans un fichier cout avec un indentation définie
 	
 private:
     Lecteur        m_lecteur;  // Le lecteur de symboles utilisé pour analyser le fichier
@@ -37,15 +38,17 @@ private:
     Noeud*  instSi();      // <instSi> ::= si ( <expression> ) <seqInst> finsi -----------à retirer quand siriche marchera------------
     Noeud*  instTantQue(); // <instTantQue> ::= tantque( <expression> ) <seqInst> fintantque
     Noeud*  instRepeter(); // <instRepeter> ::= repeter <seqInst> jusqua ( <expression> )
-    Noeud* instSiRiche();  // <instSiRiche> ::= si(<expression> )<seqInst> {sinonsi(<expression>) <seqInst> }[sinon <seqInst>]finsi
-    Noeud* instPour();     // <instPour> ::= pour ( [<affectation>] ; <expression> ; [ <affectation> ] ) <seqInst> finpour
-    Noeud* instEcrire();   // <instEcrire> ::= ecrire ( <expression> | <chaîne> {, <expression> | <chaîne> })
-    Noeud* instLire();     // <instLire>    ::= lire( <variable> {, <variable> })
+    Noeud*  instSiRiche();  // <instSiRiche> ::= si(<expression> )<seqInst> {sinonsi(<expression>) <seqInst> }[sinon <seqInst>]finsi
+    Noeud*  instPour();     // <instPour> ::= pour ( [<affectation>] ; <expression> ; [ <affectation> ] ) <seqInst> finpour
+    Noeud*  instEcrire();   // <instEcrire> ::= ecrire ( <expression> | <chaîne> {, <expression> | <chaîne> })
+    Noeud*  instLire();     // <instLire>    ::= lire( <variable> {, <variable> })
     
     // outils pour simplifier l'analyse syntaxique
     void tester (const string & symboleAttendu) const throw (SyntaxeException);   // Si symbole courant != symboleAttendu, on lève une exception
     void testerEtAvancer(const string & symboleAttendu) throw (SyntaxeException); // Si symbole courant != symboleAttendu, on lève une exception, sinon on avance
     void erreur (const string & mess) const throw (SyntaxeException);             // Lève une exception "contenant" le message mess
+    
+    
 };
 
 #endif /* INTERPRETEUR_H */
