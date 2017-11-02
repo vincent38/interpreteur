@@ -7,15 +7,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/users/info/etu-s3/rueth/M3105/TP05/M3105-TP5/Interpreteur.h</file>
-            <file>file:/users/info/etu-s3/rueth/M3105/TP05/M3105-TP5/ArbreAbstrait.cpp</file>
-            <file>file:/users/info/etu-s3/rueth/M3105/TP05/M3105-TP5/Symbole.h</file>
-            <file>file:/users/info/etu-s3/rueth/M3105/TP05/M3105-TP5/TableSymboles.h</file>
-            <file>file:/users/info/etu-s3/rueth/M3105/TP05/M3105-TP5/ArbreAbstrait.h</file>
-            <file>file:/users/info/etu-s3/rueth/M3105/TP05/M3105-TP5/main.cpp</file>
-            <file>file:/users/info/etu-s3/rueth/M3105/TP05/M3105-TP5/TableSymboles.cpp</file>
-            <file>file:/users/info/etu-s3/rueth/M3105/TP05/M3105-TP5/SymboleValue.h</file>
-            <file>file:/users/info/etu-s3/rueth/M3105/TP05/M3105-TP5/Interpreteur.cpp</file>
+            <file>file:/users/info/etu-s3/aubriotv/modules/M3105/interpreteur/Lecteur.cpp</file>
+            <file>file:/users/info/etu-s3/aubriotv/modules/M3105/interpreteur/Lecteur.h</file>
+            <file>file:/users/info/etu-s3/aubriotv/modules/M3105/interpreteur/Interpreteur.h</file>
+            <file>file:/users/info/etu-s3/aubriotv/modules/M3105/interpreteur/Interpreteur.cpp</file>
+            <file>file:/users/info/etu-s3/aubriotv/modules/M3105/interpreteur/ArbreAbstrait.cpp</file>
+            <file>file:/users/info/etu-s3/aubriotv/modules/M3105/interpreteur/main.cpp</file>
         </group>
     </open-files>
 </project-private>

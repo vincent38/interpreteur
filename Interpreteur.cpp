@@ -14,7 +14,6 @@ void Interpreteur::analyse() {
     m_arbre = programme(); // on lance l'analyse de la première règle
     if (m_error) {
         m_arbre = nullptr;
-        throw "Programme non exécuté";
     }
 }
 
@@ -62,9 +61,9 @@ Noeud* Interpreteur::seqInst() {
     // <seqInst> ::= <inst> { <inst> }
     NoeudSeqInst* sequence = new NoeudSeqInst();
     do {
-        try {
-            sequence->ajoute(inst());
-        } catch (InterpreteurException & e) {
+        /*try {*/
+        sequence->ajoute(inst());
+        /*} catch (InterpreteurException & e) {
             cout << e.what() << endl;
             int l = m_lecteur.getLigne();
             //Fast forward to next thing
@@ -74,7 +73,7 @@ Noeud* Interpreteur::seqInst() {
             }
             cout << m_lecteur.getSymbole() << endl;
             m_error = true;
-        }
+        }*/
 
     } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "ecrire" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "lire");
     // Tant que le symbole courant est un début possible d'instruction...
@@ -84,24 +83,29 @@ Noeud* Interpreteur::seqInst() {
 
 Noeud* Interpreteur::inst() {
     // <inst> ::= <affectation>  ; | <instSi>
-    if (m_lecteur.getSymbole() == "<VARIABLE>") {
-        Noeud *affect = affectation();
-        testerEtAvancer(";");
-        return affect;
-    } else if (m_lecteur.getSymbole() == "si")
-        return instSiRiche();
-        // Compléter les alternatives chaque fois qu'on rajoute une nouvelle instruction
-    else if (m_lecteur.getSymbole() == "tantque") {
-        return instTantQue();
-    } else if (m_lecteur.getSymbole() == "repeter") {
-        return instRepeter();
-    } else if (m_lecteur.getSymbole() == "pour") {
-        return instPour();
-    } else if (m_lecteur.getSymbole() == "ecrire") {
-        return instEcrire();
-    } else if (m_lecteur.getSymbole() == "lire") {
-      return instLire();
-    } else erreur("Instruction incorrecte");
+    try {
+        if (m_lecteur.getSymbole() == "<VARIABLE>") {
+            Noeud *affect = affectation();
+            testerEtAvancer(";");
+            return affect;
+        } else if (m_lecteur.getSymbole() == "si")
+            return instSiRiche();
+            // Compléter les alternatives chaque fois qu'on rajoute une nouvelle instruction
+        else if (m_lecteur.getSymbole() == "tantque") {
+            return instTantQue();
+        } else if (m_lecteur.getSymbole() == "repeter") {
+            return instRepeter();
+        } else if (m_lecteur.getSymbole() == "pour") {
+            return instPour();
+        } else if (m_lecteur.getSymbole() == "ecrire") {
+            return instEcrire();
+        } else if (m_lecteur.getSymbole() == "lire") {
+            return instLire();
+        } else erreur("Instruction incorrecte");
+    } catch (InterpreteurException & e) {
+        cout << e.what() << endl;
+        m_error = true;
+    }
 }
 
 Noeud* Interpreteur::affectation() {
@@ -154,7 +158,6 @@ Noeud* Interpreteur::facteur() {
         erreur("Facteur incorrect");
     return fact;
 }
-
 
 Noeud* Interpreteur::instSi() { //---------------------------------------à retirer quand siriche marchera------------
     // <instSi> ::= si ( <expression> ) <seqInst> finsi
@@ -304,7 +307,7 @@ Noeud* Interpreteur::instEcrire() {
     } else {
         write->ajoute(expression());
     }
-        while (m_lecteur.getSymbole() == ",") {
+    while (m_lecteur.getSymbole() == ",") {
         testerEtAvancer(",");
         if (m_lecteur.getSymbole() == "<CHAINE>") {
             write->ajoute(m_table.chercheAjoute(m_lecteur.getSymbole())); // La variable est ajoutée à la table et on la mémorise
@@ -321,7 +324,7 @@ Noeud* Interpreteur::instLire() {
     bool varExist = 1;
     vector<SymboleValue*> vars;
     SymboleValue* var;
-       
+
     testerEtAvancer("lire");
     testerEtAvancer("(");
     tester("<VARIABLE>");
@@ -329,10 +332,10 @@ Noeud* Interpreteur::instLire() {
     var = m_table.chercheAjoute(m_lecteur.getSymbole());
     vars.push_back(var);
     m_lecteur.avancer();
-    while(varExist){ //res = vars contient le nom de toute les variables concerner dans l'ordre
-        if(m_lecteur.getSymbole() == ","){
+    while (varExist) { //res = vars contient le nom de toute les variables concerner dans l'ordre
+        if (m_lecteur.getSymbole() == ",") {
             m_lecteur.avancer();
-            if(m_lecteur.getSymbole() == "<VARIABLE>"){
+            if (m_lecteur.getSymbole() == "<VARIABLE>") {
                 var = m_table.chercheAjoute(m_lecteur.getSymbole());
                 vars.push_back(var);
                 m_lecteur.avancer();
@@ -341,17 +344,17 @@ Noeud* Interpreteur::instLire() {
             varExist = 0;
         }
     }
-    testerEtAvancer(")"); 
+    testerEtAvancer(")");
     return new NoeudInstLire(vars);
 }
 
-void Interpreteur::traduitEnCPP(ostream & cout, unsigned int indentation) const{
-  cout << setw(4*indentation) << "" << "int main() {" << endl;
+void Interpreteur::traduitEnCPP(ostream & cout, unsigned int indentation) const {
+    cout << setw(4 * indentation) << "" << "int main() {" << endl;
     // Début d’un programme C++
     // Ecrire en C++ la déclaration des variables présentes dans le programme... 
     // ... variables dont on retrouvera le nom en parcourant la table des symboles ! 
     // Par exemple, si le programme contient i,j,k, il faudra écrire : int i; int j; int k; ... 
-  getArbre()->traduitEnCPP(cout,indentation+1);// lance l'opération traduitEnCPP sur la racine
-  cout << setw(4*(indentation+1)) << "" << "return 0;"<< endl; 
-  cout << setw(4*indentation) << "}" << endl; // Fin d’un programme C++ 
+    getArbre()->traduitEnCPP(cout, indentation + 1); // lance l'opération traduitEnCPP sur la racine
+    cout << setw(4 * (indentation + 1)) << "" << "return 0;" << endl;
+    cout << setw(4 * indentation) << "}" << endl; // Fin d’un programme C++ 
 }
