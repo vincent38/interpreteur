@@ -1,0 +1,10 @@
+# Test lire
+# Résultats attendus :
+# affichage à l'écran de la valeur saisie pour la variable a
+
+procedure principale()
+  a = 0;
+  ecrire("Saisir une valeur pour a : ")
+  lire(a)
+  ecrire("a vaut : ", a)
+finproc

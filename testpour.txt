@@ -1,0 +1,10 @@
+# Test pour
+# Résultats attendus :
+# test1 = 10
+
+procedure principale()
+  test1 = 0;
+  pour (i = 1; i <= 10 ; i = i + 1)
+    test1 = test1 + 1;
+  finpour
+finproc

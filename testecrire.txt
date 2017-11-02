@@ -1,0 +1,9 @@
+# Test ecrire
+# Résultats attendus :
+# affichage à l'écran
+
+procedure principale()
+  ecrire("Hello world !")
+  a = 42;
+  ecrire("a vaut : ", a)
+finproc

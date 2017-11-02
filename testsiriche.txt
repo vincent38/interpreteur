@@ -1,0 +1,62 @@
+# Test si riche
+# Résultats attendus :
+# test1 = 1
+# test2 = 1
+# test3 = 1
+# autre = 1
+# a = 2;
+
+procedure principale()
+  test1 = 0;
+  test2 = 0;
+  test3 = 0;
+  autre = 0;
+
+  a = 1;
+
+  si (a == 1)
+    test1 = 1;
+  sinonsi (a == 2)
+    test2 = 1;
+  sinonsi (a == 3)
+    test3 = 1;
+  sinon
+	autre = 1;
+  finsi
+
+  a = 2;
+
+  si (a == 1)
+    test1 = 1;
+  sinonsi (a == 2)
+    test2 = 1;
+  sinonsi (a == 3)
+    test3 = 1;
+  sinon
+	autre = 1;
+  finsi
+
+  a = 3;
+
+  si (a == 1)
+    test1 = 1;
+  sinonsi (a == 2)
+    test2 = 1;
+  sinonsi (a == 3)
+    test3 = 1;
+  sinon
+	autre = 1;
+  finsi
+
+  a = 4;
+
+  si (a == 1)
+    test1 = 1;
+  sinonsi (a == 2)
+    test2 = 1;
+  sinonsi (a == 3)
+    test3 = 1;
+  sinon
+	autre = 1;
+  finsi
+finproc
