@@ -6,4 +6,11 @@ procedure principale()
     a = a-1;
   fintantque
   ecrire("resultat :",a)
+  si(a == b+1)
+    a = 2;
+  sinonsi(a == b+2)
+    a = 3;
+  sinon
+    a = 1256;
+  finsi
 finproc
