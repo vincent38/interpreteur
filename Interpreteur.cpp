@@ -354,6 +354,14 @@ void Interpreteur::traduitEnCPP(ostream & cout, unsigned int indentation) const 
     // Ecrire en C++ la déclaration des variables présentes dans le programme... 
     // ... variables dont on retrouvera le nom en parcourant la table des symboles ! 
     // Par exemple, si le programme contient i,j,k, il faudra écrire : int i; int j; int k; ... 
+    for (int s = 0; s < m_table.getTaille(); s++) {
+        SymboleValue b = m_table[s];
+        if (b == "<VARIABLE>") {
+            cout << "int ";
+            cout << b.getChaine();
+            cout << ";" << endl;
+        }
+    }
     getArbre()->traduitEnCPP(cout, indentation + 1); // lance l'opération traduitEnCPP sur la racine
     cout << setw(4 * (indentation + 1)) << "" << "return 0;" << endl;
     cout << setw(4 * indentation) << "}" << endl; // Fin d’un programme C++ 

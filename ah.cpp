@@ -1,4 +1,6 @@
     int main() {
+int a;
+int b;
      cin >> a;
        a = a * a;
        b = a + 5;

@@ -1,6 +1,0 @@
-instSiRiche 	-> hydriss
-instTantQue 	-> OK
-insstRepeter 	-> OK
-instPour
-instEcrire
-instLire
