@@ -1,10 +1,21 @@
 # Test pour
 # Résultats attendus :
-# test1 = 10
+# test1 = 30
 
 procedure principale()
   test1 = 0;
+  ecrire("i")
   pour (i = 1; i <= 10 ; i = i + 1)
     test1 = test1 + 1;
+  finpour
+  j = 1;
+  ecrire("j")
+  pour (;j <= 10 ; j = j + 1)
+    test1 = test1 + 1;
+  finpour
+  ecrire("k")
+  pour (k = 1; k <= 10)
+    test1 = test1 + 1;
+    k = k + 1;
   finpour
 finproc

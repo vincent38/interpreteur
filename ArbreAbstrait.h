@@ -27,6 +27,7 @@ class Noeud {
     virtual void ajoute(Noeud* instruction) { throw OperationInterditeException(); }
     virtual ~Noeud() {} // Présence d'un destructeur virtuel conseillée dans les classes abstraites
     virtual void traduitEnCPP(ostream & cout, unsigned int indentation) const {}; //permet de traduire en c++ dans le flux cout en prenant compte de l'indentation
+    virtual void traduitEnCPPNoComma(ostream & cout, unsigned int indentation) const {};
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -54,6 +55,7 @@ class NoeudAffectation : public Noeud {
     ~NoeudAffectation() {} // A cause du destructeur virtuel de la classe Noeud
     int executer();        // Exécute (évalue) l'expression et affecte sa valeur à la variable
     void traduitEnCPP(ostream & cout, unsigned int indentation) const;
+    void traduitEnCPPNoComma(ostream & cout, unsigned int indentation) const;
     
 
   private:

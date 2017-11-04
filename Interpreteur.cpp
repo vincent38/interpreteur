@@ -349,7 +349,12 @@ Noeud* Interpreteur::instLire() {
 }
 
 void Interpreteur::traduitEnCPP(ostream & cout, unsigned int indentation) const {
-    cout << setw(4 * indentation) << "" << "int main() {" << endl;
+    cout << "#include <iostream>" << endl;
+    cout << "using namespace std;" << endl;
+    cout << endl;
+    cout << "int main() {" << endl;
+    cout << endl;
+    cout << setw(4) << "" << "//Variables utilisateur" << endl;
     // Début d’un programme C++
     // Ecrire en C++ la déclaration des variables présentes dans le programme... 
     // ... variables dont on retrouvera le nom en parcourant la table des symboles ! 
@@ -357,12 +362,26 @@ void Interpreteur::traduitEnCPP(ostream & cout, unsigned int indentation) const 
     for (int s = 0; s < m_table.getTaille(); s++) {
         SymboleValue b = m_table[s];
         if (b == "<VARIABLE>") {
-            cout << "int ";
+            cout << setw(4) << "" << "int ";
             cout << b.getChaine();
             cout << ";" << endl;
         }
     }
-    getArbre()->traduitEnCPP(cout, indentation + 1); // lance l'opération traduitEnCPP sur la racine
-    cout << setw(4 * (indentation + 1)) << "" << "return 0;" << endl;
-    cout << setw(4 * indentation) << "}" << endl; // Fin d’un programme C++ 
+    cout << endl;
+    cout << setw(4) << "" << "//Programme généré";
+    cout << endl;
+    getArbre()->traduitEnCPP(cout, indentation); // lance l'opération traduitEnCPP sur la racine
+    cout << setw(4) << "";
+    cout << "return 0;" << endl;
+    cout << "}" << endl; // Fin d’un programme C++ 
+}
+
+int Interpreteur::getVar(string var){
+    for (int s = 0; s < m_table.getTaille(); s++) {
+        SymboleValue b = m_table[s];
+        if (b == "<VARIABLE>" && b.getChaine() == var) {
+            return b.executer();
+        }
+    }
+    return 0;
 }
