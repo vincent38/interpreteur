@@ -1,0 +1,111 @@
+///////////////////////////////////////////////////
+// Dans interpreteur.h
+///////////////////////////////////////////////////
+
+Noeud*  instSelon();    // <instSeleon> ::= Selon (<variable>) { cas <entier> : <SeqInst> } [defaut : <SeqInst>] FinSelon
+
+///////////////////////////////////////////////////
+// Dans interpreteur.cpp
+///////////////////////////////////////////////////
+
+void Interpreteur::instSelon(){ // <instSeleon> ::= Selon (<variable>) { cas <entier> : <SeqInst> } [defaut : <SeqInst>] FinSelon
+    Noeud* var;
+    vector<Noeud*> seqInsts;
+    Noeud* seqInstActuellementTraitée;
+    vector<Noeud*> entiers;
+    Noeud* seqParDefaut;
+    
+    testerEtAvancer("selon");
+    testerEtAvancer("(");
+    tester("<VARIABLE>");
+    var = m_table.chercheAjoute(m_lecteur.getSymbole());
+    testerEtAvancer(")");
+    
+    while(m_lecteur.getSymbole() == "cas"){
+        m_lecteur.avancer()
+        testerEtAvancer(":");
+        tester("<ENTIER>");
+        entiers.push_back(m_table.chercheAjoute(m_lecteur.getSymbole()));
+        seqInstActuellementTraitée = seqInst();
+        seqInsts.push_back(seqInstActuellementTraitée);   
+    }
+    
+    if (m_lecteur.getSymbole() == "defaut"){
+        m_lecteur.avancer();
+        testerEtAvancer(":");
+        seqParDefaut = seqInst();
+    } 
+    testerEtAvancer("finselon");
+    
+    return new NoeudInstSelon(var,entiers,seqInsts,seqParDefaut);   
+}
+
+///////////////////////////////////////////////////
+// Dans arbreAbstrait.h
+///////////////////////////////////////////////////
+
+class NoeudInstSelon : public Noeud {
+// Classe pour représenter un noeud "affectation"
+//  composé de 2 fils : la variable et l'expression qu'on lui affecte
+  public:
+    NoeudInstSelon(Noeud* variable, vector<Noeud*> entiers, vector<Noeud*> insts, Noeud* instParDefaut); // construit une affectation
+    ~NoeudInstSelon() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();        // Exécute (évalue) l'expression et affecte sa valeur à la variable
+    void traduitEnCPP(ostream & cout, unsigned int indentation) const;
+    
+
+  private:
+    Noeud* m_variable;
+    vector<Noeud*> m_entiers;
+    vector<Noeud*> m_insts;
+    Noeud* m_instParDefaut;
+};
+
+///////////////////////////////////////////////////
+// Dans arbreAbstrait.cpp
+///////////////////////////////////////////////////
+
+void NoeudInstSelon::NoeudInstSelon(Noeud* variable, vector<Noeud*> entiers, vector<Noeud*> insts, Noeud* instParDefaut){ // construit une affectation
+    m_variable = variable;
+    m_entiers = entiers;
+    m_insts = insts;
+    m_instParDefaut = instParDefaut;
+}
+
+void NoeudInstSelon::executer(){
+    int i = 0;
+    bool trouve = 0;
+    for (auto cas : m_entiers) {
+            if (m_variable->executer() == cas->executer()) {
+                m_insts[i]->executer();
+                trouve = 1;
+                break;
+            }
+            i++;
+    }
+    if(trouve == 0 && m_instParDefaut != nullptr){
+        m_instParDefaut->executer();
+    }
+}
+
+void NoeudInstSelon::traduitEnCPP(ostream& cout, unsigned int indentation) const{
+    int i = 0;
+    
+    cout << setw(4*indentation) << "" << "switch (";
+    m_variable->traduitEnCPP(cout,0);
+    cout << ") {" << endl;
+    for (auto entier : m_entiers){
+        cout << setw(4*(indentation+1)) << "case : ";
+        entier->traduitEnCPP(cout,0);
+        cout << endl;
+        m_insts[i]->traduitEnCPP(cout,indentation+2);
+        cout << setw(4*(indentation+1)) << "break;" << endl;
+        i++;
+    }
+    if (m_instParDefaut == nullptr){
+        cout << setw(4*(indentation+1)) << "default :" << endl;
+        m_instParDefaut->traduitEnCPP(cout,indentation+2);
+        cout << setw(4*(indentation+1)) << "break;" << endl;
+    } 
+    cout << setw(4*indentation) << "}" << endl;
+}
