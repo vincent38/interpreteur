@@ -204,4 +204,60 @@ class NoeudInstEcrire : public Noeud {
     vector<Noeud*> m_toPrint;
 };
 
+////////////////////////////////////////////////////////////////////////////////
+class NoeudPreIncrementation : public Noeud {
+// Classe pour représenter un noeud "affectation"
+//  composé de 2 fils : la variable et l'expression qu'on lui affecte
+  public:
+     NoeudPreIncrementation(SymboleValue* variable); // construit une affectation
+    ~NoeudPreIncrementation() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();        // Exécute (évalue) l'expression et affecte sa valeur à la variable
+    void traduitEnCPP(ostream & cout, unsigned int indentation) const; 
+
+  private:
+    SymboleValue* m_variable;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+class NoeudPreDecrementation : public Noeud {
+// Classe pour représenter un noeud "affectation"
+//  composé de 2 fils : la variable et l'expression qu'on lui affecte
+  public:
+     NoeudPreDecrementation(SymboleValue* variable); // construit une affectation
+    ~NoeudPreDecrementation() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();        // Exécute (évalue) l'expression et affecte sa valeur à la variable
+    void traduitEnCPP(ostream & cout, unsigned int indentation) const; 
+
+  private:
+    SymboleValue* m_variable;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+class NoeudPostIncrementation : public Noeud {
+// Classe pour représenter un noeud "affectation"
+//  composé de 2 fils : la variable et l'expression qu'on lui affecte
+  public:
+     NoeudPostIncrementation(SymboleValue* variable); // construit une affectation
+    ~NoeudPostIncrementation() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();        // Exécute (évalue) l'expression et affecte sa valeur à la variable
+    void traduitEnCPP(ostream & cout, unsigned int indentation) const; 
+
+  private:
+    SymboleValue* m_variable;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+class NoeudPostDecrementation : public Noeud {
+// Classe pour représenter un noeud "affectation"
+//  composé de 2 fils : la variable et l'expression qu'on lui affecte
+  public:
+     NoeudPostDecrementation(SymboleValue* variable); // construit une affectation
+    ~NoeudPostDecrementation() {} // A cause du destructeur virtuel de la classe Noeud
+    int executer();        // Exécute (évalue) l'expression et affecte sa valeur à la variable
+    void traduitEnCPP(ostream & cout, unsigned int indentation) const; 
+
+  private:
+    SymboleValue* m_variable;
+};
+
 #endif /* ARBREABSTRAIT_H */

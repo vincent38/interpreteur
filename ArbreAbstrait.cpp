@@ -368,3 +368,83 @@ void NoeudInstEcrire::traduitEnCPP(ostream & cout, unsigned int indentation) con
     }
     cout << " << endl;" << endl;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// NoeudPreIncrementation
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudPreIncrementation::NoeudPreIncrementation(SymboleValue* variable)
+: m_variable(variable) {
+}
+
+int NoeudPreIncrementation::executer() {
+    int buff = m_variable->executer();
+    m_variable->setValeur(++buff);
+    return 0; // La valeur renvoyée ne représente rien !
+}
+
+void NoeudPreIncrementation::traduitEnCPP(ostream & cout, unsigned int indentation) const{
+    cout << setw(4*indentation) << "" << "++";
+    m_variable->traduitEnCPP(cout, indentation);
+    cout << ";";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// NoeudPreDecrementation
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudPreDecrementation::NoeudPreDecrementation(SymboleValue* variable)
+: m_variable(variable) {
+}
+
+int NoeudPreDecrementation::executer() {
+    int buff = m_variable->executer();
+    m_variable->setValeur(--buff);
+    return 0; // La valeur renvoyée ne représente rien !
+}
+
+void NoeudPreDecrementation::traduitEnCPP(ostream & cout, unsigned int indentation) const{
+    cout << setw(4*indentation) << "" << "--";
+    m_variable->traduitEnCPP(cout, indentation);
+    cout << ";";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// NoeudPostIncrementation
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudPostIncrementation::NoeudPostIncrementation(SymboleValue* variable)
+: m_variable(variable) {
+}
+
+int NoeudPostIncrementation::executer() {
+    int buff = m_variable->executer();
+    m_variable->setValeur(buff++);
+    return 0; // La valeur renvoyée ne représente rien !
+}
+
+void NoeudPostIncrementation::traduitEnCPP(ostream & cout, unsigned int indentation) const{
+    cout << setw(4*indentation) << "";
+    m_variable->traduitEnCPP(cout, indentation);
+    cout << "++" << ";";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// NoeudPostDecrementation
+////////////////////////////////////////////////////////////////////////////////
+
+NoeudPostDecrementation::NoeudPostDecrementation(SymboleValue* variable)
+: m_variable(variable) {
+}
+
+int NoeudPostDecrementation::executer() {
+    int buff = m_variable->executer();
+    m_variable->setValeur(buff--);
+    return 0; // La valeur renvoyée ne représente rien !
+}
+
+void NoeudPostDecrementation::traduitEnCPP(ostream & cout, unsigned int indentation) const{
+    cout << setw(4*indentation) << "";
+    m_variable->traduitEnCPP(cout, indentation);
+    cout << "--" << ";";
+}

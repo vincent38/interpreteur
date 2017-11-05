@@ -6,6 +6,7 @@ int main() {
     //Variables utilisateur
     int a;
     int b;
+    int c;
 
     //Programme généré
     cin >> a;
@@ -25,6 +26,12 @@ int main() {
     } else {
         a = 1256;
     }
+
+    c = 1;
+    cout << c << endl;
+
+    c++;
+    cout << c << endl;
 
     return 0;
 }

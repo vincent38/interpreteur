@@ -21,6 +21,7 @@ public:
 	inline Noeud* getArbre () const { return m_arbre; }                    // accesseur
         void traduitEnCPP(ostream & cout, unsigned int indentation) const;     //permet de traduire en c++ dans un fichier cout avec un indentation définie
         int getVar(string var);
+        void setVar(string var, int val);
 	
 private:
     Lecteur        m_lecteur;  // Le lecteur de symboles utilisé pour analyser le fichier
@@ -34,8 +35,12 @@ private:
     Noeud*  inst();	   // <inst> ::= <affectation> ; | <instSi>
     Noeud*  affectation(); // <affectation> ::= <variable> = <expression> 
     Noeud*  expression();  // <expression> ::= <facteur> { <opBinaire> <facteur> }
-    Noeud*  opRel();       // <opRel> ::= == | != | < | <= | > | >=
-    Noeud*  facteur();     // <facteur> ::= <entier>  |  <variable>  |  - <facteur>  | non <facteur> | ( <expression> )
+    Noeud*  terme();       // <terme> ::= <facteur> { * <facteur> | / <facteur> }
+    Noeud*  facteur();     // <facteur> ::= <entier> | <variable> | - <expBool> | non <expBool> | ( <expBool> )
+    Noeud*  expBool();     // <expBool> ::= <relationEt> { ou <relationEt> }
+    Noeud*  relationEt();  // <relationEt> ::= <relation> { et <relation> }
+    Noeud*  relation();    // <relation> ::= <expression> { <opRel> <expression> }
+    //Noeud*  facteur();     // <facteur> ::= <entier>  |  <variable>  |  - <facteur>  | non <facteur> | ( <expression> )
                            // <opBinaire> ::= + | - | *  | / | < | > | <= | >= | == | != | et | ou
     Noeud*  instSi();      // <instSi> ::= si ( <expression> ) <seqInst> finsi -----------à retirer quand siriche marchera------------
     Noeud*  instTantQue(); // <instTantQue> ::= tantque( <expression> ) <seqInst> fintantque
@@ -44,6 +49,10 @@ private:
     Noeud*  instPour();     // <instPour> ::= pour ( [<affectation>] ; <expression> ; [ <affectation> ] ) <seqInst> finpour
     Noeud*  instEcrire();   // <instEcrire> ::= ecrire ( <expression> | <chaîne> {, <expression> | <chaîne> })
     Noeud*  instLire();     // <instLire>    ::= lire( <variable> {, <variable> })
+    Noeud*  preInc();       // <preInc> ::= ++<variable>
+    Noeud*  preDec();       // <preDec> ::= --<variable>
+    Noeud*  postInc();      // <postInc> ::= <variable>++
+    Noeud*  postDec();      // <postDec> ::= <variable>--
     
     // outils pour simplifier l'analyse syntaxique
     void tester (const string & symboleAttendu) const throw (SyntaxeException);   // Si symbole courant != symboleAttendu, on lève une exception
