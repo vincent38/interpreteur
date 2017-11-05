@@ -41,7 +41,7 @@ procedure principale()
   si (a == 1)
     test1 = 1;
   sinonsi (a == 2)
-    test2 = 1
+    test2 = 1;
   sinonsi (a == 3)
     test3 = 1;
   sinon
@@ -58,5 +58,5 @@ procedure principale()
     test3 = 1;
   sinon
 	autre = 1;
-
+  finsi
 finproc

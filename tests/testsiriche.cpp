@@ -47,7 +47,7 @@ void testsiriche::testFailedMethod() {
     //Mise en place analyse fichier 1
     ifstream fichier("testsirichesyntaxefausse.txt");
     Interpreteur interpreteur(fichier);
-    interpreteur.analyse();
+    CPPUNIT_ASSERT_THROW_MESSAGE("No syntax error detected?!", interpreteur.analyse(), SyntaxeException);
     CPPUNIT_ASSERT_MESSAGE("tree is not empty!", interpreteur.getArbre()==nullptr);
 }
 

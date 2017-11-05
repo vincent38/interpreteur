@@ -34,6 +34,7 @@ private:
     Noeud*  inst();	   // <inst> ::= <affectation> ; | <instSi>
     Noeud*  affectation(); // <affectation> ::= <variable> = <expression> 
     Noeud*  expression();  // <expression> ::= <facteur> { <opBinaire> <facteur> }
+    Noeud*  opRel();       // <opRel> ::= == | != | < | <= | > | >=
     Noeud*  facteur();     // <facteur> ::= <entier>  |  <variable>  |  - <facteur>  | non <facteur> | ( <expression> )
                            // <opBinaire> ::= + | - | *  | / | < | > | <= | >= | == | != | et | ou
     Noeud*  instSi();      // <instSi> ::= si ( <expression> ) <seqInst> finsi -----------à retirer quand siriche marchera------------

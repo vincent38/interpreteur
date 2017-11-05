@@ -1,6 +1,6 @@
 procedure principale()
   lire(a)
-  a = a * a;
+  a = a * a
   b = a + 5;
   tantque(a > 4)
     a = a-1;

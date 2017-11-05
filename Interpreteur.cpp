@@ -14,6 +14,7 @@ void Interpreteur::analyse() {
     m_arbre = programme(); // on lance l'analyse de la première règle
     if (m_error) {
         m_arbre = nullptr;
+        throw SyntaxeException("Syntaxe incorrecte");
     }
 }
 
@@ -118,6 +119,8 @@ Noeud* Interpreteur::affectation() {
     return new NoeudAffectation(var, exp); // On renvoie un noeud affectation
 }
 
+//OLD - Expression v1
+
 Noeud* Interpreteur::expression() {
     // <expression> ::= <facteur> { <opBinaire> <facteur> }
     //  <opBinaire> ::= + | - | *  | / | < | > | <= | >= | == | != | et | ou
@@ -135,6 +138,22 @@ Noeud* Interpreteur::expression() {
     }
     return fact; // On renvoie fact qui pointe sur la racine de l'expression
 }
+
+//NEW - Expression v2
+
+
+
+Symbole Interpreteur::opRel() {
+    // <opRel> ::= == | != | < | <= | > | >=
+    if (m_lecteur.getSymbole() == "==" or m_lecteur.getSymbole() == "!=" or m_lecteur.getSymbole() == "<" or m_lecteur.getSymbole() == "<=" or m_lecteur.getSymbole() == ">" or m_lecteur.getSymbole() == ">=") {
+        Symbole operateur = m_lecteur.getSymbole();
+        return operateur;
+    } else {
+        erreur("Opérateur incorrect");
+    }
+}
+
+//END
 
 Noeud* Interpreteur::facteur() {
     // <facteur> ::= <entier> | <variable> | - <facteur> | non <facteur> | ( <expression> )
