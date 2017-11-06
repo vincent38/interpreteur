@@ -1,9 +1,14 @@
-# Test ecrire
+# Test ecrire + ordres de priorité
 # Résultats attendus :
 # affichage à l'écran
 
 procedure principale()
-  ecrire("Hello world !")
-  a = 42;
-  ecrire("a vaut : ", a)
+  a = 1;
+  b = 0;
+  sortie = 0;
+  
+  #Test ordres priorité
+  a = 1 + 1 * 2 - 3;
+  b = 3 / (1 ou 0) - 3 * 1;
+  ecrire("Résultat ordre de priorité : attendu - 1 | réel - ",(a == b))
 finproc

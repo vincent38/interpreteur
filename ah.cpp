@@ -6,32 +6,15 @@ int main() {
     //Variables utilisateur
     int a;
     int b;
-    int c;
+    int sortie;
 
     //Programme généré
-    cin >> a;
-
-    a = a * a;
-    b = a + 5;
-    while (a > 4) {
-        a = a - 1;
-    }
-
-    cout << "resultat :" << a << endl;
-
-    if (a == b + 1) {
-        a = 2;
-    } else if (a == b + 2) {
-        a = 3;
-    } else {
-        a = 1256;
-    }
-
-    c = 1;
-    cout << c << endl;
-
-    c++;
-    cout << c << endl;
+    a = 1;
+    b = 0;
+    sortie = 0;
+    a = 1 + 1 * 2 - 3;
+    b = 3 / 1 ou 0 - 3 * 1;
+    cout << "Résultat ordre de priorité : attendu - 1 | réel - " << a == b << endl;
 
     return 0;
 }

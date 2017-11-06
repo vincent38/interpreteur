@@ -448,3 +448,52 @@ void NoeudPostDecrementation::traduitEnCPP(ostream & cout, unsigned int indentat
     m_variable->traduitEnCPP(cout, indentation);
     cout << "--" << ";";
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// NoeudInstSelon
+////////////////////////////////////////////////////////////////////////////////
+NoeudInstSelon::NoeudInstSelon(Noeud* variable, vector<Noeud*> entiers, vector<Noeud*> insts, Noeud* instParDefaut){ // construit une affectation
+    m_variable = variable;
+    m_entiers = entiers;
+    m_insts = insts;
+    m_instParDefaut = instParDefaut;
+}
+
+int NoeudInstSelon::executer(){
+    int i = 0;
+    bool trouve = 0;
+    for (auto cas : m_entiers) {
+            if (m_variable->executer() == cas->executer()) {
+                m_insts[i]->executer();
+                trouve = 1;
+                break;
+            }
+            i++;
+    }
+    if(trouve == 0 && m_instParDefaut != nullptr){
+        m_instParDefaut->executer();
+    }
+    return 0;
+}
+
+void NoeudInstSelon::traduitEnCPP(ostream& cout, unsigned int indentation) const{
+    int i = 0;
+    
+    cout << setw(4*indentation) << "" << "switch (";
+    m_variable->traduitEnCPP(cout,0);
+    cout << ") {" << endl;
+    for (auto entier : m_entiers){
+        cout << setw(4*(indentation+1)) << "case : ";
+        entier->traduitEnCPP(cout,0);
+        cout << endl;
+        m_insts[i]->traduitEnCPP(cout,indentation+2);
+        cout << setw(4*(indentation+1)) << "break;" << endl;
+        i++;
+    }
+    if (m_instParDefaut == nullptr){
+        cout << setw(4*(indentation+1)) << "default :" << endl;
+        m_instParDefaut->traduitEnCPP(cout,indentation+2);
+        cout << setw(4*(indentation+1)) << "break;" << endl;
+    } 
+    cout << setw(4*indentation) << "}" << endl;
+}

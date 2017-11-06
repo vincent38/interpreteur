@@ -22,7 +22,6 @@ int main(int argc, char* argv[]) {
         cout << endl << "================ Table des symboles avant exécution : " << interpreteur.getTable();
         cout << endl << "================ Execution de l'arbre" << endl;
         // On exécute le programme si l'arbre n'est pas vide
-        cout << "arbre : " << interpreteur.getArbre() << endl;
         interpreteur.getArbre()->executer();
     } else {
         throw "Erreurs de syntaxe détectées - Impossible de poursuivre l'exécution et la compilation";

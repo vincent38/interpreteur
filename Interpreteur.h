@@ -49,10 +49,9 @@ private:
     Noeud*  instPour();     // <instPour> ::= pour ( [<affectation>] ; <expression> ; [ <affectation> ] ) <seqInst> finpour
     Noeud*  instEcrire();   // <instEcrire> ::= ecrire ( <expression> | <chaîne> {, <expression> | <chaîne> })
     Noeud*  instLire();     // <instLire>    ::= lire( <variable> {, <variable> })
+    Noeud*  instSelon();    // <instSeleon> ::= Selon (<variable>) { cas <entier> : <SeqInst> } [defaut : <SeqInst>] FinSelon
     Noeud*  preInc();       // <preInc> ::= ++<variable>
     Noeud*  preDec();       // <preDec> ::= --<variable>
-    Noeud*  postInc();      // <postInc> ::= <variable>++
-    Noeud*  postDec();      // <postDec> ::= <variable>--
     
     // outils pour simplifier l'analyse syntaxique
     void tester (const string & symboleAttendu) const throw (SyntaxeException);   // Si symbole courant != symboleAttendu, on lève une exception

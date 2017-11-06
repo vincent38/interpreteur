@@ -76,7 +76,7 @@ Noeud* Interpreteur::seqInst() {
             m_error = true;
         }*/
 
-    } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "ecrire" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "lire" || m_lecteur.getSymbole() == "++");
+    } while (m_lecteur.getSymbole() == "<VARIABLE>" || m_lecteur.getSymbole() == "si" || m_lecteur.getSymbole() == "tantque" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "ecrire" || m_lecteur.getSymbole() == "repeter" || m_lecteur.getSymbole() == "pour" || m_lecteur.getSymbole() == "lire" || m_lecteur.getSymbole() == "++" || m_lecteur.getSymbole() == "--" || m_lecteur.getSymbole() == "selon");
     // Tant que le symbole courant est un début possible d'instruction...
     // Il faut compléter cette condition chaque fois qu'on rajoute une nouvelle instruction
     return sequence;
@@ -104,6 +104,10 @@ Noeud* Interpreteur::inst() {
             return instLire();
         } else if (m_lecteur.getSymbole() == "++") {
             return preInc();
+        } else if (m_lecteur.getSymbole() == "--") {
+            return preDec();
+        } else if (m_lecteur.getSymbole() == "selon") {
+            return instSelon();
         } else erreur("Instruction incorrecte");
     } catch (InterpreteurException & e) {
         cout << e.what() << endl;
@@ -445,6 +449,42 @@ Noeud* Interpreteur::instLire() {
     return new NoeudInstLire(vars);
 }
 
+Noeud* Interpreteur::instSelon(){ 
+    // <instSeleon> ::= Selon (<variable>) { cas <entier> : <SeqInst> } [defaut : <SeqInst>] FinSelon
+    Noeud* var;
+    vector<Noeud*> seqInsts;
+    Noeud* seqInstActuellementTraitee;
+    vector<Noeud*> entiers;
+    Noeud* seqParDefaut;
+    
+    testerEtAvancer("selon");
+    testerEtAvancer("(");
+    tester("<VARIABLE>");
+    var = m_table.chercheAjoute(m_lecteur.getSymbole());
+    m_lecteur.avancer();
+    testerEtAvancer(")");
+    
+    while(m_lecteur.getSymbole() == "cas"){
+        m_lecteur.avancer();
+        tester("<ENTIER>");
+        entiers.push_back(m_table.chercheAjoute(m_lecteur.getSymbole()));
+        m_lecteur.avancer();
+        testerEtAvancer(":");
+        seqInstActuellementTraitee = seqInst();
+        seqInsts.push_back(seqInstActuellementTraitee); 
+        m_lecteur.avancer();
+    }
+    
+    if (m_lecteur.getSymbole() == "defaut"){
+        m_lecteur.avancer();
+        testerEtAvancer(":");
+        seqParDefaut = seqInst();
+    } 
+    testerEtAvancer("finselon");
+    
+    return new NoeudInstSelon(var,entiers,seqInsts,seqParDefaut);   
+}
+
 Noeud* Interpreteur::preInc() {
     testerEtAvancer("++");
     NoeudPreIncrementation* b = new NoeudPreIncrementation(m_table.chercheAjoute(m_lecteur.getSymbole())); // on ajoute la variable ou l'entier à la table
@@ -457,22 +497,6 @@ Noeud* Interpreteur::preDec() {
     testerEtAvancer("--");
     NoeudPreIncrementation* b = new NoeudPreIncrementation(m_table.chercheAjoute(m_lecteur.getSymbole())); // on ajoute la variable ou l'entier à la table
     m_lecteur.avancer();
-    testerEtAvancer(";");
-    return b;
-}
-
-Noeud* Interpreteur::postInc() {
-    NoeudPreIncrementation* b = new NoeudPreIncrementation(m_table.chercheAjoute(m_lecteur.getSymbole())); // on ajoute la variable ou l'entier à la table
-    m_lecteur.avancer();
-    testerEtAvancer("++");
-    testerEtAvancer(";");
-    return b;
-}
-
-Noeud* Interpreteur::postDec() {
-    NoeudPreIncrementation* b = new NoeudPreIncrementation(m_table.chercheAjoute(m_lecteur.getSymbole())); // on ajoute la variable ou l'entier à la table
-    m_lecteur.avancer();
-    testerEtAvancer("--");
     testerEtAvancer(";");
     return b;
 }

@@ -13,6 +13,7 @@ repeter
 jusqua
 lire
 ecrire
+selon
 ;
 ,
 =

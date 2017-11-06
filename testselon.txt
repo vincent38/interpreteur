@@ -1,0 +1,16 @@
+# Test répéter
+# Résultats attendus :
+# test1 = 1
+# test2 = 1
+# defaut = 1
+ 
+procedure principale()
+  test1 = 0;
+  test2 = 0;
+  defaut = 0;
+  a = 1;
+  selon(a)
+    cas 1 : test1 = 1;
+    defaut : defaut = 1;
+  finselon
+finproc
