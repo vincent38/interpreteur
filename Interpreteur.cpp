@@ -449,7 +449,7 @@ Noeud* Interpreteur::instLire() {
     return new NoeudInstLire(vars);
 }
 
-Noeud* Interpreteur::instSelon(){ 
+Noeud* Interpreteur::instSelon(){            // <!> Fonction inactive, problème lors de l'analyse <!>
     // <instSeleon> ::= Selon (<variable>) { cas <entier> : <SeqInst> } [defaut : <SeqInst>] FinSelon
     Noeud* var;
     vector<Noeud*> seqInsts;
@@ -466,13 +466,17 @@ Noeud* Interpreteur::instSelon(){
     
     while(m_lecteur.getSymbole() == "cas"){
         m_lecteur.avancer();
-        tester("<ENTIER>");
+        if (m_lecteur.getSymbole() != "<ENTIER>") {
+            erreur("Entier attendu !");
+        }
         entiers.push_back(m_table.chercheAjoute(m_lecteur.getSymbole()));
         m_lecteur.avancer();
         testerEtAvancer(":");
+        
         seqInstActuellementTraitee = seqInst();
         seqInsts.push_back(seqInstActuellementTraitee); 
-        m_lecteur.avancer();
+        //m_lecteur.avancer();
+        testerEtAvancer("fincas");
     }
     
     if (m_lecteur.getSymbole() == "defaut"){

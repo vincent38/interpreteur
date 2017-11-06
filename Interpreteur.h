@@ -49,7 +49,7 @@ private:
     Noeud*  instPour();     // <instPour> ::= pour ( [<affectation>] ; <expression> ; [ <affectation> ] ) <seqInst> finpour
     Noeud*  instEcrire();   // <instEcrire> ::= ecrire ( <expression> | <chaîne> {, <expression> | <chaîne> })
     Noeud*  instLire();     // <instLire>    ::= lire( <variable> {, <variable> })
-    Noeud*  instSelon();    // <instSeleon> ::= Selon (<variable>) { cas <entier> : <SeqInst> } [defaut : <SeqInst>] FinSelon
+    Noeud*  instSelon();    // <instSeleon> ::= Selon (<variable>) { cas <entier> : <SeqInst> } [defaut : <SeqInst>] FinSelon <!> fonction inactive, probleme lors de l'analyse <!>
     Noeud*  preInc();       // <preInc> ::= ++<variable>
     Noeud*  preDec();       // <preDec> ::= --<variable>
     

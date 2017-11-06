@@ -10,7 +10,12 @@ procedure principale()
   defaut = 0;
   a = 1;
   selon(a)
-    cas 1 : test1 = 1;
-    defaut : defaut = 1;
+    cas 1 : 
+		si (test1 == 0)
+			test1 = 1;
+		finsi 
+		fincas
+    #defaut : 
+	#	defaut = 1; 
   finselon
 finproc
